@@ -1,0 +1,6 @@
+interface:
+  display_name: "SuperGPT Image Gen"
+  short_description: "Generate images in both SuperGPT desktop modes"
+  default_prompt: "Use $supergpt-imagegen to generate an image with SuperGPT."
+policy:
+  allow_implicit_invocation: true

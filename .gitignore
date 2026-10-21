@@ -11,4 +11,7 @@ supergpt-api-key
 *.log
 *.db
 *.jsonl
+outputs/
+configuration-repair-*/
+*-backup-*/
 

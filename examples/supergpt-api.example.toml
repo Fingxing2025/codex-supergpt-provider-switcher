@@ -1,0 +1,26 @@
+# 仅用于说明。请运行 configure.py 生成本机模板并安装生图技能。
+model_provider = "supergpt"
+model = "gpt-6.1-sol"
+model_catalog_json = "/ABSOLUTE/PATH/TO/supergpt-codex-models.json"
+
+[model_providers.supergpt]
+name = "SuperGPT"
+base_url = "https://api.supergpt.dev/v1"
+wire_api = "responses"
+supports_websockets = false
+requires_openai_auth = false
+experimental_bearer_token = "REPLACE_WITH_YOUR_SUPERGPT_API_KEY"
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"
+
+[plugins."browser@openai-bundled"]
+enabled = false
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = false
+
+# 独立模式不应包含 mcp_servers.node_repl 或 mcp_servers.cua_repl。
+[[skills.config]]
+path = "/ABSOLUTE/PATH/TO/skills/supergpt-imagegen"
+enabled = true

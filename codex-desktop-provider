@@ -18,10 +18,11 @@ fi
 
 choice=$(zenity --list --title="Codex 模型提供商" \
   --text="选择下次启动时新聊天使用的模型提供商。旧聊天不会自动切换。" \
-  --column="提供商" "SuperGPT" "官方账号") || exit 0
+  --column="提供商" "SuperGPT（含图片生成）" "SuperGPT 独立 API（含生图，无 Work 浏览器）" "官方账号") || exit 0
 
 case "$choice" in
-  "SuperGPT") source_config="$codex_home/config.supergpt.toml" ;;
+  "SuperGPT（含图片生成）") source_config="$codex_home/config.supergpt.toml" ;;
+  "SuperGPT 独立 API（含生图，无 Work 浏览器）") source_config="$codex_home/config.supergpt-api.toml" ;;
   "官方账号") source_config="$codex_home/config.official.toml" ;;
   *) exit 2 ;;
 esac

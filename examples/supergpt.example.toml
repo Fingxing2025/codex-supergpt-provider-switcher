@@ -1,4 +1,4 @@
-# 仅用于说明。请运行 configure.py 生成带有正确路径的本机私有模板。
+# 仅用于说明。请运行 configure.py 生成本机私有模板并安装生图技能。
 model_provider = "supergpt"
 model = "gpt-6.1-sol"
 model_catalog_json = "/ABSOLUTE/PATH/TO/supergpt-codex-models.json"
@@ -10,4 +10,11 @@ wire_api = "responses"
 supports_websockets = false
 requires_openai_auth = true
 experimental_bearer_token = "REPLACE_WITH_YOUR_SUPERGPT_API_KEY"
+
+[desktop]
+conversationDetailMode = "STEPS_PROSE"
+
+[[skills.config]]
+path = "/ABSOLUTE/PATH/TO/skills/supergpt-imagegen"
+enabled = true
 
