@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+codex_home="${CODEX_HOME:-$HOME/.codex}"
+config="$codex_home/config.toml"
+desktop_app="${CODEX_DESKTOP_APP:-/usr/lib/chatgpt/ChatGPT}"
+
+if ! command -v zenity >/dev/null 2>&1; then
+  printf '%s\n' '需要先安装 zenity。' >&2
+  exit 1
+fi
+
+if pgrep -x ChatGPT >/dev/null 2>&1; then
+  zenity --warning --title="应用正在运行" \
+    --text="请先正常退出 ChatGPT/Codex 桌面应用，再使用切换器。" || true
+  exit 1
+fi
+
+choice=$(zenity --list --title="Codex 模型提供商" \
+  --text="选择下次启动时新聊天使用的模型提供商。旧聊天不会自动切换。" \
+  --column="提供商" "SuperGPT" "官方账号") || exit 0
+
+case "$choice" in
+  "SuperGPT") source_config="$codex_home/config.supergpt.toml" ;;
+  "官方账号") source_config="$codex_home/config.official.toml" ;;
+  *) exit 2 ;;
+esac
+
+if [[ ! -f "$source_config" || ! -x "$desktop_app" ]]; then
+  zenity --error --title="无法切换" \
+    --text="请先运行 configure.py 生成配置，并确认 CODEX_DESKTOP_APP 指向正确的桌面程序。" || true
+  exit 1
+fi
+
+# 配置可能包含凭据，备份和新文件都限制为当前用户可读写。
+umask 077
+if [[ -f "$config" ]]; then
+  backup=$(mktemp "$config.before-provider-switch-XXXXXXXX")
+  cp -- "$config" "$backup"
+  chmod 600 "$backup"
+fi
+temporary=$(mktemp "$codex_home/.provider-switch-XXXXXXXX")
+trap 'rm -f -- "$temporary"' EXIT
+install -m 600 -- "$source_config" "$temporary"
+mv -f -- "$temporary" "$config"
+trap - EXIT
+exec "$desktop_app"
+

@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.env
+.env.*
+auth.json
+config.toml
+config.*.toml
+supergpt-api-key
+*-models.json
+*.before-*
+*.log
+*.db
+*.jsonl
+
